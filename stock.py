@@ -4,7 +4,10 @@
 
 import sys
 
-#import pandas_datareader
+import datetime
+
+import pandas
+import pandas_datareader as web
 
 reload(sys)
 sys.setdefaultencoding("utf-8")
@@ -15,9 +18,20 @@ class StockAna:
         print(sys.version)
 
     def getStockInfo(self):
-        print()
+        '''
+        获取股票数据
+        :return:
+        '''
+        start = datetime.datetime(2017, 6, 5)
+        end   = datetime.date.today()
+
+        #goog = web.data.DataReader('GOOG', "yahoo", start, end)
+        #print(goog)
+        print(end)
 
 
 if __name__ == '__main__':
     stockAna = StockAna()
+
+    stockAna.getStockInfo()
     
