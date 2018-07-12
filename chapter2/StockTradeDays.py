@@ -16,7 +16,7 @@ from functools import partial
 reload(sys)
 sys.setdefaultencoding("utf-8")
 
-class StockTradDays(object):
+class StockTradeDays(object):
     def __init__(self, price_array, start_date, date_array=None):
         '''
         初始化变量
