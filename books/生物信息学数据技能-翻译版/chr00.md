@@ -143,6 +143,13 @@
 
 &emsp;&emsp;显示应替换为用户提供的值或由上下文确定的值的文本。
 
+!['suggestion'](../img/suggestion.png)这个元素表示提示或建议。
+
+!['note'](../img/note.png)此元素表示一般注释。
+
+!['warning'](../img/warning.png)此元素表示警告或警示。
+
+
 ## 代码使用示例
 
 &emsp;&emsp;这本书可以在工作中帮到你。
