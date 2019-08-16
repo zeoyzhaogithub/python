@@ -990,3 +990,194 @@ $ git commit --amend
 2.	如果您正在开发软件，分支允许您在不影响工作生产版本(主分支)的情况下开发新功能或错误修复。功能或bug修复完成后，您可以将其合并到主分支中，将更改合并到您的生产版本中。
 3.	同样，分支机构简化了对存储库的协作工作。每个协作者都可以在自己单独的分支上工作，这可以防止其他协作者中断主分支。当协作者的更改准备好共享时，可以将它们合并到主分支中。
 
+## 创建和使用分支:git branch 和git checkout
+         
+&emsp;&emsp;作为一个简单的示例，让我们创建一个名为readme-changes的新分支。假设我们想对readme.md进行一些编辑，但是我们不确定这些更改是否准备好合并到主分支master中。
+         
+&emsp;&emsp;要创建Git分支，我们使用git Branch<Branch Name>。在没有任何参数的情况下调用时，git Branch列出所有分支。让我们创建Readme-Changes分支并检查它是否存在：
+```shell
+$ git branch readme-changes$ git branch
+* master
+ readme-changes
+ ```
+           
+&emsp;&emsp;master旁边的星号表示这是我们当前所在的分支。要切换到Readme-Changes分支，请使用git checkout readme-changes：
+```shell
+$ git checkout readme-changesSwitched to branch 'readme-changes'
+$ git branch
+ master
+* readme-changes
+```
+       
+&emsp;&emsp;请注意，星号位于Readme-Changes旁边，表示这是我们当前的分支。现在，假设我们广泛地编辑readme.md部分，如下所示：
+```shell
+# Zea Mays SNP Calling ProjectProject started 2013-01-03.
+## Samples
+Samples downloaded 2013-01-11 into `data/seqs`:
+ data/seqs/zmaysA_R1.fastq
+ data/seqs/zmaysA_R2.fastq
+ data/seqs/zmaysB_R1.fastq
+ data/seqs/zmaysB_R2.fastq
+ data/seqs/zmaysC_R1.fastq
+ data/seqs/zmaysC_R2.fastq
+## Reference
+```
+       
+&emsp;&emsp;现在，如果我们提交这些更改，我们的提交将被添加到readme-changes 分支。我们可以通过切换回主分支并看到此提交不存在来验证这一点：
+```shell
+$ git commit -a -m "reformatted readme, added sample info" (1)[readme-changes 6e680b6] reformatted readme, added sample info
+ 1 file changed, 12 insertions(+), 3 deletions(-)
+$ git log --abbrev-commit --pretty=oneline -n 3    (2)
+6e680b6 reformatted readme, added sample info
+20041ab resolved merge conflict in README.md
+08ccd3b added reference download date
+$ git checkout master    (3)
+Switched to branch 'master'
+$ git log --abbrev-commit --pretty=oneline -n 3    (4)
+20041ab resolved merge conflict in README.md
+08ccd3b added reference download date
+dafce75 added ref genome download date and link
+```
+(1)我们在分支readme-changes上的提交。
+
+(2)我们刚刚进行的提交(6e680b6)。
+
+(3)切换回我们的总支
+
+(4)我们最后一次在master上的提交是20041ab。我们对readme.md的更改仅在readme-changes分支上进行，当我们切换回master时，Git会将我们的文件换出到该分支上的那些版本。
+
+&emsp;&emsp;回到主分支，假设我们添加adapters.fa文件，并提交此更改：
+```shell
+$ git branch* master
+ readme-changes
+$ echo "&gt;adapter-1\\nGATGATCATTCAGCGACTACGATCG" &gt;&gt; adapters.fa
+$ git add adapters.fa
+$ git commit -a -m "added adapters file"
+[master dd57e33] added adapters file
+ 1 file changed, 2 insertions(+)
+ create mode 100644 adapters.fa
+```
+
+&emsp;&emsp;现在，两个分支都有了新的提交。这种情况如图5-6所示。
+​​
+!['5-6'](../img/5-6.png)
+图5-6、我们的两个分支(在Git中，分支表示为提交处的指针，如此处所示)，master和readme-change分支已经分叉，因为它们指向不同的提交(我们的头指向master，表明这是我们所在的当前分支)。
+
+&emsp;&emsp;另一种可视化的方法是使用git log。我们将使用-branches选项指定我们想要查看所有分支，-n 2只查看这些最后的提交：
+```shell
+$ git log --abbrev-commit --pretty=oneline --graph --branches -n2* dd57e33 added adapters file
+| * 6e680b6 reformatted readme, added sample info
+|/
+```
+
+## 合并分支：git merge
+     
+&emsp;&emsp;由于我们的两个分支是分开的，我们现在想要将它们合并在一起。合并两个分支的策略很简单。首先，使用git checkout切换到我们想要将另一个分支合并到的分支。然后，使用git merge<other Branch>将另一个分支合并到当前分支中。在我们的示例中，我们希望将readme-changes分支合并到master中，因此我们首先切换到master。然后我们使用：
+
+```shell     
+$ git merge readme-changesMerge made by the 'recursive' strategy.
+ README.md | 15 ++++++++++++---
+ 1 file changed, 12 insertions(+), 3 deletions(-)
+```
+     
+&emsp;&emsp;没有合并冲突，所以git merge打开我们的文本编辑器，让我们编写合并提交消息。再一次，让我们使用git log来查看以下内容：
+```shell
+$ git log --abbrev-commit --pretty=oneline --graph --branches -n 3* e9a81b9 Merge branch 'readme-changes'
+|\
+| * 6e680b6 reformatted readme, added sample info
+Working with Branches | 105
+* | dd57e33 added adapters file
+|/
+```
+       
+&emsp;&emsp;请记住，合并分支时可能会发生合并冲突。事实上，我们在第92页的“Merge Conflicts”中遇到的合并冲突是两个分支之间的冲突；git pull在远程分支和本地分支之间进行合并(在第106页的“分支和远程”中有更多关于这一点的信息)。如果我们在运行git merge时遇到了合并冲突，我们会按照第92页的“Merge Conflicts”中相同的策略来解决它。
+       
+&emsp;&emsp;当我们使用git log查看我们的历史提交记录时，我们只看到了几次提交-现在让我们来看看整个Git历史：
+```shell
+$ git log --abbrev-commit --pretty=oneline --graph --branches* e9a81b9 Merge branch 'readme-changes'
+|\
+| * 6e680b6 reformatted readme, added sample info
+* | dd57e33 added adapters file
+|/
+* 20041ab resolved merge conflict in README.md
+|\
+| * dafce75 added ref genome download date and link
+* | 08ccd3b added reference download date
+|/
+* 269aa09 added reference genome info
+* 46f0781 added information about samples
+* c509f63 added .gitignore
+* e4feb22 added markdown extensions to README files
+* 94e2365 added information about project to README
+* 3d7ffa6 initial import
+```
+       
+&emsp;&emsp;请注意，我们的历史记录中有两个解决提交记录：一个来自我们在git提取后解决的合并冲突，另一个来自我们最近合并的readme-Changes分支。
+
+## 远程分支
+      
+&emsp;&emsp;我们在上一节中创建的分支完全是本地的-到目前为止，我们的合作者无法看到此分支或其提交。这是Git的一个很好的特性：您可以创建和使用分支来满足您的工作流需求，而不必与合作者共享这些分支。在某些情况下，我们确实希望与合作者共享我们的本地分支机构。在本节中，我们将看到Git的分支机构和远程存储库是如何关联的，以及我们如何与协作者共享本地分支机构的工作。
+      
+&emsp;&emsp;远程分支是一种特殊类型的本地分支。事实上，当您推送到远程存储库和从远程存储库提取时，您已经与这些远程分支进行了交互。使用带有选项-all的git Branch，我们可以看到这些隐藏的远程分支：
+```shell
+$ git branch --all* master
+ readme-changes
+ remotes/origin/master
+```
+       
+&emsp;&emsp;remotes/Original/master是一个远程分支-我们不能对它进行操作，但可以使用git fetch将其与远程存储库中的最新提交进行同步。有趣的是，git pull只不过是git fetch后跟git合并。虽然有点技术性，但理解这个想法将极大地帮助您使用远程存储库和远程分支。让我们一步来看一个例子，假设Barbara正在开始一个新的文档，该文档将详细描述您项目的所有生物信息学方法。她创建一个new-method分支，进行一些提交，然后将此分支上的这些提交推送到我们的中央存储库：
+```shell
+$ git push origin new-methodsCounting objects: 4, done.
+Delta compression using up to 2 threads.
+Compressing objects: 100% (2/2), done.
+Writing objects: 100% (3/3), 307 bytes | 0 bytes/s, done.
+Total 3 (delta 1), reused 0 (delta 0)
+To git@github.com:vsbuffalo/zmays-snps.git
+ * [new branch] new-methods -&gt; new-methods
+```
+       
+&emsp;&emsp;回到我们的存储库中，我们可以使用git fetch<remo tename>获取Barbara的最新分支。这将创建一个新的远程分支，我们可以通过git branch --all看到它：
+```shell
+$ git fetch originremote: Counting objects: 4, done.
+remote: Compressing objects: 100% (1/1), done.
+remote: Total 3 (delta 1), reused 3 (delta 1)
+Unpacking objects: 100% (3/3), done.
+From github.com:vsbuffalo/zmays-snps
+ = [up to date] master -&gt; origin/master
+ * [new branch] new-methods -&gt; origin/new-methods
+$ git branch --all
+* master
+ new-methods
+ remotes/origin/master
+ remotes/origin/new-methods
+ ```
+        
+&emsp;&emsp;git fetch不会更改任何本地分支；相反，它只会将远程分支与来自远程存储库的最新提交同步。如果在GIT获取之后，我们想要将远程分支上的新提交合并到本地分支中，我们将使用git merge。例如，我们可以使用git merge Origin/new-method将Barbara的new-method分支合并到我们的主分支中，这模拟了git pull。
+
+## 继续git学习
+       
+&emsp;&emsp;Git是一个强大的版本控制系统。本章介绍了版本控制和通过推送、拉取进行协作的基础知识，这足以应用到您的日常生物信息学工作中。我们还介绍了一些基本的工具和技术，这些工具和技术可以帮助您摆脱麻烦或使用Git更容易，例如git checkout用于恢复文件，git stash用于存放您的工作更改，git Branch用于处理分支。掌握了所有这些概念之后，您可能希望继续学习更高级的Git主题，例如rebase(Git Rebase)、搜索修订(Git Grep)和子模块。然而，这些主题在日常Git使用中都不是必需的；您可以根据需要搜索和学习这些主题。这些高级主题的一个很好的资源是Scott Chacon和Ben Straub的Pro Git书籍。
+       
+&emsp;&emsp;然而，Barbara的分支才刚刚开始-假设我们想在将new-method分支合并到主分支之前对其进行开发。我们不能在远程分支上开发(例如，我们的remotes/Origin/new-method)，所以我们需要创建一个从这个分支开始的新分支：
+
+```shell      
+$ git checkout -b new-methods origin/new-methodsBranch new-methods set up to track remote branch new-methods from origin.
+Switched to a new branch 'new-methods'
+```
+       
+&emsp;&emsp;在这里，我们使用git checkout的b选项同时创建和切换一个新的分支。请注意，Git通知我们它正在跟踪这个分支。这意味着如果我们只使用git push或git pull而不带参数，那么这个本地分支就知道向哪个远程分支推送和从哪个远程分支拉取。如果我们要在此分支上提交更改，则可以使用git push将其推送到远程：
+```shell
+$ echo "\\n(1) trim adapters\\n(2) quality-based trimming" &gt;&gt; methods.md$ git commit -am "added quality trimming steps"
+[new-methods 5f78374] added quality trimming steps
+ 1 file changed, 3 insertions(+)
+$ git push
+Counting objects: 5, done.
+Delta compression using up to 2 threads.
+Compressing objects: 100% (3/3), done.
+Writing objects: 100% (3/3), 339 bytes | 0 bytes/s, done.
+Total 3 (delta 1), reused 0 (delta 0)
+To git@github.com:vsbuffalo/zmays-snps.git
+ 6364ebb..9468e38 new-methods -&gt; new-methods
+ ```
+        
+&emsp;&emsp;在您和您的合作者决定将这些更改合并到master中之前，可以继续在new-method上进行开发。至此，这个分支机构的工作已经被纳入到项目的主要部分中。如果您愿意，可以使用git push Origin：new-method删除远程分支，并使用git Branch-d new-method删除您的本地分支。      
