@@ -11,10 +11,9 @@ from abupy import ABuSymbolPd
 from functools import partial
 
 
-
-
 reload(sys)
 sys.setdefaultencoding("utf-8")
+
 
 class StockTradeDays(object):
     def __init__(self, price_array, start_date, date_array=None):
@@ -32,8 +31,6 @@ class StockTradeDays(object):
         self.__change_array = self.__init_change()
         # 进行OrderedDict封装
         self.stock_dict = self._init_stock_dict()
-
-
 
     def __init_change(self):
         '''
@@ -59,7 +56,6 @@ class StockTradeDays(object):
         )
         change_array.insert(0, 0)
         return change_array
-
 
     def _init_days(self, start_date, date_array):
         '''
@@ -102,7 +98,6 @@ class StockTradeDays(object):
 
         return stock_dict
 
-
     def filter_stock(self, want_up=True, want_calc_sum=False):
         '''
         筛选结果子集
@@ -111,7 +106,8 @@ class StockTradeDays(object):
         :return:
         '''
 
-        filter_func = (lambda day: day.change > 0) if want_up else (lambda day: day.change < 0)
+        filter_func = (lambda day: day.change > 0) if want_up else (
+            lambda day: day.change < 0)
         # 使用filter_func 作为筛选函数
         want_days = filter(
             filter_func, self.stock_dict.values()
@@ -125,8 +121,6 @@ class StockTradeDays(object):
 
         return change_sum
 
-
-
     def __str__(self):
         '''
         自定义__repr__ 和 __str__ 是为了简化调试和实例化输出
@@ -134,8 +128,6 @@ class StockTradeDays(object):
         '''
         return str(self.stock_dict)
     __repr__ = __str__
-
-
 
     def __iter__(self):
         '''
@@ -145,7 +137,6 @@ class StockTradeDays(object):
         for key in self.stock_dict:
             yield self.stock_dict[key]
 
-
     def __getitem__(self, ind):
         '''
 
@@ -154,7 +145,6 @@ class StockTradeDays(object):
         '''
         date_key = self.__date_array[ind]
         return self.stock_dict[date_key]
-
 
     def __len__(self):
         '''
@@ -190,5 +180,3 @@ if __name__ == '__main__':
     date_array = ABuSymbolPd.make_kl_df('TSLA', n_folds=2).date.tolist()
     print(price_array[:5])
     print(date_array[:5])
-
-
