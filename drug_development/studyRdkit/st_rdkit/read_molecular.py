@@ -19,7 +19,7 @@ mol = Chem.MolFromSmiles(smi)   # 将Smiles转换为mol对象
 # 将Mol分子画出结构图，并存储在相应地址
 Draw.MolToImageFile(
     mol,    # mol分子对象
-    "/Users/zeoy/st/drug_development/st_rdcit/img/mol2.jpg"  # 分子结构图存储地址
+    "/drug_development/studyRdkit/st_rdcit/img/mol2.jpg"  # 分子结构图存储地址
 )
 print('mol的类型=', type(mol))   # mol的类型=<class 'rdkit.Chem.rdchem.Mol'>
 
@@ -28,17 +28,17 @@ print('mol的类型=', type(mol))   # mol的类型=<class 'rdkit.Chem.rdchem.Mol
 
 # 将mol文件转换为mol对象
 mol3 = Chem.MolFromMolFile(
-    '/Users/zeoy/st/drug_development/st_rdcit/952883.mol')
+    '/drug_development/studyRdkit/st_rdcit/data/952883.mol')
 # 将Mol分子画出结构图，并存储在相应地址
 Draw.MolToImageFile(
     mol3,    # mol分子对象
-    "/Users/zeoy/st/drug_development/st_rdcit/img/mol3.jpg"  # 分子结构图存储地址
+    "/drug_development/studyRdkit/st_rdcit/img/mol3.jpg"  # 分子结构图存储地址
 )
 print('mol3的类型=', type(mol))  # mol3的类型=<class 'rdkit.Chem.rdchem.Mol'>
 
 # 1.3 读入sdf文件
 mols_suppl = Chem.SDMolSupplier(
-    '/Users/zeoy/st/drug_development/st_rdcit/2d.sdf')
+    '/drug_development/studyRdkit/st_rdcit/data/2d.sdf')
 print('类型=', type(mols_suppl))
 for _mol in mols_suppl:
     print('类型=', type(_mol))  # mol3的类型=<class 'rdkit.Chem.rdchem.Mol'>
@@ -56,4 +56,4 @@ molblock = Chem.MolToMolBlock(mol4)
 print(molblock)
 # print(*objects, sep=’ ‘, end=’n’, file=sys.stdout, flush=False)
 # python的print函数file参数支持定义输出位置。
-print(molblock, file=open('/Users/zeoy/st/drug_development/st_rdcit/stock.mol', 'w+'))
+print(molblock, file=open('/drug_development/studyRdkit/st_rdcit/data/stock.mol', 'w+'))
