@@ -7,3 +7,7 @@
 ## read_molecular
 
 rdkit 读写分子
+
+## update_molecular
+
+rdkit 修改分子
