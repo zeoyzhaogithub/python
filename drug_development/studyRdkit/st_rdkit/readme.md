@@ -23,3 +23,11 @@ rdkit 绘制分子【可视化分子】
 ## substruct_mol
 
 rdkit 化学转换
+
+## operation_molecular
+
+rdkit 操作分子对象
+
+## substruct_match_mol
+
+rdkit 子结构搜索
