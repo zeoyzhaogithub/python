@@ -31,3 +31,7 @@ rdkit 操作分子对象
 ## substruct_match_mol
 
 rdkit 子结构搜索
+
+## fingerprint_mol
+
+rdkit 化学指纹和相似性（fingerprint）
