@@ -35,3 +35,7 @@ rdkit 子结构搜索
 ## fingerprint_mol
 
 rdkit 化学指纹和相似性（fingerprint）
+
+## descriptor_mol
+
+rdkit 分子性质（描述符）
