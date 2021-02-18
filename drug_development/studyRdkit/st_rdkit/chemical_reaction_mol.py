@@ -55,8 +55,8 @@ def getrxns(rxn, product_smi):
             smis.append(smi)
 
         rxnstr = '.'.join(smis) + '>>' + product_smi
-        # newr = canon_reaction(rxnstr)
-        # rxns.append(newr)
+        newr = canon_reaction(rxnstr)
+        rxns.append(newr)
     return rxns
 
 
@@ -64,9 +64,9 @@ tem = '([Cl;H0;D1;+0:1]-[c;H0;D3;+0:2](:[c:3]):[n;H0;D2;+0:4]:[c:5])>>(C-[n;H0;D
 rxn = AllChem.ReactionFromSmarts(tem)
 product_smi = 'CC(C)(Nc1nc(Cl)c(-c2ccc(F)cc2)c(-c2ccncc2)n1)c1ccccc1'
 reactions = getrxns(rxn, product_smi)
-# for reaction in reactions:
-#     img = Draw.ReactionStringToImage(reaction)
-#     display(img)
+for reaction in reactions:
+    img = Draw.ReactionStringToImage(reaction)
+    display(img)
 
 # 三、化学反应模板
 # 化学反应模板主要可通过两种方法获取：1. 自动抽取；2. 化学家编码。
