@@ -43,3 +43,7 @@ rdkit 分子性质（描述符）
 ## chemical_reaction_mol
 
 rdkit 化学反应
+
+## chemical_reaction_advanced
+
+rdkit 化学反应高级功能
