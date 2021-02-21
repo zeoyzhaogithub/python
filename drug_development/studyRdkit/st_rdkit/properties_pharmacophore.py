@@ -23,7 +23,7 @@ from rdkit.Chem.Pharm2D import Generate, Gobbi_Pharm2D
 
 fdefName = os.path.join(
     RDConfig.RDDataDir,
-    '/Users/zeoy/st/drug_development/st_rdcit/BaseFeatures.fdef'
+    '/drug_development/studyRdkit/st_rdcit/data/BaseFeatures.fdef'
 )
 factory = ChemicalFeatures.BuildFeatureFactory(fdefName)
 
@@ -31,7 +31,7 @@ smi = 'C=CC(=O)N1CCC(CC1)C2CCNC3=C(C(=NN23)C4=CC=C(C=C4)OC5=CC=CC=C5)C(=O)N'
 m = Chem.MolFromSmiles(smi)
 Draw.MolToImageFile(
     m,
-    "/Users/zeoy/st/drug_development/st_rdcit/img/mol38.jpg",
+    "/drug_development/studyRdkit/st_rdcit/img/mol38.jpg",
 )
 # 使用特征工厂搜索特征
 feats = factory.GetFeaturesForMol(m)
@@ -69,7 +69,7 @@ for f in feats:
 # 每个化学特征对应的SMARTS，参考文档
 # key为“特征家族.特征类型”，值为SMARTS
 fdefName = os.path.join(
-    RDConfig.RDDataDir, '/Users/zeoy/st/drug_development/st_rdcit/BaseFeatures.fdef')
+    RDConfig.RDDataDir, '/drug_development/studyRdkit/st_rdcit/data/BaseFeatures.fdef')
 featFactory = ChemicalFeatures.BuildFeatureFactory(fdefName)
 
 print(list(featFactory.GetFeatureDefs().items())[:2])
@@ -144,7 +144,7 @@ print(list(featFactory.GetFeatureDefs().items())[:2])
 # 对上面计算的性质进行组合可以用作分子的2D药效团。 药效团可以进一步转化为分子药效团指纹。
 # 参考文件
 fdefName = os.path.join(
-    RDConfig.RDDataDir, '/Users/zeoy/st/drug_development/st_rdcit/BaseFeatures.fdef')
+    RDConfig.RDDataDir, '/drug_development/studyRdkit/st_rdcit/data/BaseFeatures.fdef')
 # 实例化特征工厂
 featFactory = ChemicalFeatures.BuildFeatureFactory(fdefName)
 
