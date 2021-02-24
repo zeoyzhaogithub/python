@@ -47,3 +47,11 @@ rdkit 化学反应
 ## chemical_reaction_advanced
 
 rdkit 化学反应高级功能
+
+## properties_pharmacophore
+
+rdkit 化学性质和药效团
+
+## fragment_mol
+
+rdkit 分子片段、R集团分解、片段指纹与指纹重要性分析
