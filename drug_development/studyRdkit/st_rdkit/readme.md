@@ -55,3 +55,28 @@ rdkit 化学性质和药效团
 ## fragment_mol
 
 rdkit 分子片段、R集团分解、片段指纹与指纹重要性分析
+
+## smarts_rule
+
+化学信息学-smarts规则速查表
+
+## distinguish_chem_all_chem
+
+rdkit Chem 和AllChem的区别
+
+## aromaticity_mol
+
+rdkit 分子片段、R集团分解、片段指纹与指纹重要性分析
+
+## smiles_extension_mol
+
+rdkit smiles支持和扩展
+
+## smart_extension_mol
+
+rdkit SMARTS支持和扩展
+
+## chemical_reaction_handling
+
+rdkit 化学反应处理Chemical Reaction Handling
+
